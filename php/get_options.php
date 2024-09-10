@@ -1,4 +1,6 @@
 <?php
+header('Content-Type: application/json');
+
 // Установите параметры подключения к базе данных
 $servername = "localhost";
 $username = "rico"; // Замените на ваше имя пользователя
@@ -10,7 +12,9 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 
 // Проверьте соединение
 if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+    header('Content-Type: application/json');
+    echo json_encode(['error' => 'Connection failed: ' . $conn->connect_error]);
+    exit();
 }
 
 // Получение параметра запроса (master или service)
@@ -25,6 +29,7 @@ if ($type === 'masters') {
         $data[] = $row;
     }
 
+    header('Content-Type: application/json');
     echo json_encode(['masters' => $data]);
 
 } elseif ($type === 'services') {
@@ -36,9 +41,11 @@ if ($type === 'masters') {
         $data[] = $row;
     }
 
+    header('Content-Type: application/json');
     echo json_encode(['services' => $data]);
 
 } else {
+    header('Content-Type: application/json');
     echo json_encode(['error' => 'Invalid type specified']);
 }
 
