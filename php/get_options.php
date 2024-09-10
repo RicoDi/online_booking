@@ -55,4 +55,4 @@ if ($type === 'masters') {
 }
 
 $conn->close();
-?>
+
