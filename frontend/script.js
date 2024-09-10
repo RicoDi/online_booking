@@ -9,14 +9,20 @@ document.addEventListener('DOMContentLoaded', () => {
     fetch('/php/get_options.php?type=masters')
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Network response was not ok: ${response.status}`);
             }
             return response.json();
         })
         .then(data => {
             const masterSelect = document.getElementById('dropdown_master');
             if (masterSelect) {
+                if (!Array.isArray(data.masters)) {
+                    throw new Error('Некорректный формат данных: ожидается массив мастеров');
+                }
                 data.masters.forEach(master => {
+                    if (!master.id || !master.name) {
+                        throw new Error(`Некорректные данные мастера: ${JSON.stringify(master)}`);
+                    }
                     const option = document.createElement('option');
                     option.value = master.id;
                     option.textContent = master.name;
@@ -36,7 +42,7 @@ if (masterSelect) {
             fetch(`/php/get_options.php?type=services&master_id=${masterId}`)
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error('Network response was not ok');
+                        throw new Error(`Network response was not ok: ${response.status}`);
                     }
                     return response.json();
                 })
@@ -44,7 +50,13 @@ if (masterSelect) {
                     const serviceSelect = document.getElementById('dropdown_service');
                     if (serviceSelect) {
                         serviceSelect.innerHTML = '<option value="">Выберите услугу</option>';
+                        if (!Array.isArray(data.services)) {
+                            throw new Error('Некорректный формат данных: ожидается массив услуг');
+                        }
                         data.services.forEach(service => {
+                            if (!service.id || !service.name) {
+                                throw new Error(`Некорректные данные услуги: ${JSON.stringify(service)}`);
+                            }
                             const option = document.createElement('option');
                             option.value = service.id;
                             option.textContent = service.name;
@@ -70,7 +82,7 @@ if (bookingForm) {
         })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Network response was not ok');
+                throw new Error(`Network response was not ok: ${response.status}`);
             }
             return response.json();
         })
