@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Booking</title>
+    <link rel="stylesheet" href="/public/css/style.css">
+ 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
+</head>
+<body>
+     <div class="main_container">
+        <h1>Форма онлайн записи</h1>
+        <form id="bookingForm">
+            <h2>Оберіть майстра</h2>
+            <div class="dropdown_block">
+                <label for="dropdown_master">Выберите мастера:</label>
+                <select name="dropdown_master" id="dropdown_master">
+                    <option value="">Выберите мастера</option>
+                    <!-- Мастера будут загружены с сервера -->
+                </select>
+            </div>
+
+            <h2>Тип услуги</h2>
+            <div class="dropdown_block">
+                <label for="dropdown_service">Выберите услугу</label>
+                <select name="dropdown_service" id="dropdown_service">
+                    <option value="">Loading...</option>
+                </select>
+            </div>
+
+            <div class="dropdown_block">
+                <label for="date-picker">Выберите дату</label>
+                <input type="text" id="date-picker" name="date-picker" placeholder="Выберите дату">
+            </div>
+
+            <div id="responseMessage"></div>
+            <button type="submit">Записаться</button>
+    <script src="script.js"></script>
+</body>
+</html>
