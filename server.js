@@ -5,24 +5,52 @@ const bodyParser = require('body-parser');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Устанавливаем параметры подключения к базе данных
-const dbConfig = {
-    host: "185.252.24.105",
-    user: "Rico", // Замените на ваше имя пользователя
-    password: "me3Hh2FaBt", // Замените на ваш пароль
-    database: "online_booking_db1" // Замените на ваше имя базы данных
-};
-
-// Создаём подключение к базе данных
-const connection = mysql.createConnection(dbConfig);
-
-connection.connect((err) => {
-    if (err) {
-        console.error('Ошибка подключения к базе данных: ' + err.stack);
-        process.exit(1);
+const pool = mysql.createPool({
+    host: '185.252.24.105',
+    user: 'Rico',
+    password: 'me3Hh2FaBt', // Замените на ваш пароль
+    database: 'online_booking_db1'
+  });
+  
+  // Функция для выполнения запросов
+  const query = (sql, params) => {
+    return new Promise((resolve, reject) => {
+      pool.query(sql, params, (error, results) => {
+        if (error) return reject(error);
+        resolve(results);
+      });
+    });
+  };
+  
+  // Эндпоинт для получения мастеров
+  app.get('/api', async (req, res) => {
+    try {
+      const { type } = req.query;
+      if (type === 'Masster') {
+        const masters = await query('SELECT * FROM masters');
+        res.json({ masters });
+      } else {
+        res.status(400).json({ error: 'Некорректный тип запроса' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Ошибка сервера' });
     }
-    console.log('Подключено к базе данных.');
-});
+  });
+  
+  // Эндпоинт для получения услуг по ID мастера
+  app.get('/api/services', async (req, res) => {
+    try {
+      const { master_id } = req.query;
+      if (master_id) {
+        const services = await query('SELECT * FROM services WHERE master_id = ?', [master_id]);
+        res.json({ services });
+      } else {
+        res.status(400).json({ error: 'Отсутствует ID мастера' });
+      }
+    } catch (error) {
+      res.status(500).json({ error: 'Ошибка сервера' });
+    }
+  });
 
 // Указываем папку для статических файлов (CSS, JS, изображения и т.д.)
 app.use(express.static(path.join(__dirname, 'public')));

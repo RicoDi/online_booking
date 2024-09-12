@@ -7,7 +7,7 @@ flatpickr("#date-picker", {
 // Загрузка мастеров
 document.addEventListener('DOMContentLoaded', () => {
     // Выполняем запрос на получение мастеров через ваш Node.js API
-    fetch('/api?type=Masster')
+    fetch('/api?type=Master')
         .then(response => {
             if (!response.ok) {
                 throw new Error('Ошибка запроса: ' + response.status);
@@ -63,6 +63,8 @@ if (masterSelect) {
         }
     });
 }
+
+
 
 // Обработка отправки формы
 const bookingForm = document.getElementById('bookingForm');

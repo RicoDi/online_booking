@@ -26,42 +26,42 @@
             
 
                 <div class="page active" id="page1" >
-                    <div class="data_container">
+                    <form id="user_data" class="data_container">
                         <h2>Заполните информацию о себе</h2>
                         <div class="client_data">
-                        <label for="first-name">Ім'я</label>
-                        <input type="text" id="name" name="first-name" required>
+                            <label for="first-name">Ім'я</label>
+                            <input type="text" id="name" name="name" required>
                         </div>
                         <div class="client_data">
-                        <label for="last-name">Фамілія *</label>
-                        <input type="text" id="surname" name="last-name" required>
+                            <label for="last-name">Фамілія *</label>
+                            <input type="text" id="surname" name="surname" required>
                         </div>
-                     <div class="client_data">
-                        <label for="phone">Номер телефона *</label>
-                        <input type="tel" id="phone" name="phone" required>
-                    </div>
-                    <div class="client_data">
-                        <label for="email">E-mail *</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                    
-                    <div class="client_data">
-                        <label for="address">Адрес</label>
-                        <input type="text" id="address" name="address">
-                    </div>
-                    <div class="client_data">
-                        <label for="city">Город</label>
-                        <input type="text" id="city" name="city">
-                    </div>
-                    <div class="client_data">
-                        <label for="zip">Индекс</label>
-                        <input type="text" id="zip" name="zip">
-                    </div>
-                    <div class="client_data">
-                        <label for="notes">Заметки</label>
-                        <textarea id="notes" name="notes"></textarea>
-                    </div>
-                </div>
+                        <div class="client_data">
+                            <label for="phone">Номер телефона *</label>
+                            <input type="tel" id="phone" name="phone" required>
+                        </div>
+                        <div class="client_data">
+                            <label for="email">E-mail *</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        
+                        <!-- <div class="client_data">
+                            <label for="address">Адрес</label>
+                            <input type="text" id="address" name="address">
+                        </div>
+                        <div class="client_data">
+                            <label for="city">Город</label>
+                            <input type="text" id="city" name="city">
+                        </div>
+                        <div class="client_data">
+                            <label for="zip">Индекс</label>
+                            <input type="text" id="zip" name="zip">
+                        </div>
+                        <div class="client_data">
+                            <label for="notes">Заметки</label>
+                            <textarea id="notes" name="notes"></textarea>
+                        </div> -->
+                    </form>
                 
                 </div>
 
@@ -73,7 +73,7 @@
                     
                     <div class="dropdown_block">
                         <label for="dropdown_master">Майстер:</label>
-                        <select name="dropdown_master" id="dropdown_master">
+                        <select name="dropdown_master" id="mastersSelect">
                             <option value="Masster">Послуга</option>
                             <!-- Мастера будут загружены с сервера -->
                         </select>
@@ -118,6 +118,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 <script src="/js/script.js"></script>
 <script src="/js/calendar.js"></script>
+<script src="/js/front.js"></script>
 </body>
 </html>
 
