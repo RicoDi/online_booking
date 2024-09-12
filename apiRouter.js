@@ -23,14 +23,13 @@ const query = (sql, params) => {
   // Эндпоинт для получения мастеров
 router.get('/masters', async (req, res) => {
     try {
-      const masters = await query('SELECT * FROM masters');
+      const masters = await query('SELECT * FROM Masters');
       res.json({ masters });
     } catch (error) {
       res.status(500).json({ error: 'Ошибка сервера' });
     }
   });
   
-  // Эндпоинт для получения услуг по ID мастера
   router.get('/services', async (req, res) => {
     try {
       const { master_id } = req.query;
@@ -38,7 +37,14 @@ router.get('/masters', async (req, res) => {
         return res.status(400).json({ error: 'Отсутствует ID мастера' });
       }
   
-      const services = await query('SELECT * FROM services WHERE master_id = ?', [master_id]);
+      // Используем промежуточную таблицу для получения услуг, связанных с мастером
+      const services = await query(`
+        SELECT s.id, s.name 
+        FROM services s
+        JOIN MasterServices ms ON s.id = ms.service_id
+        WHERE ms.master_id = ?
+      `, [master_id]);
+  
       res.json({ services });
     } catch (error) {
       res.status(500).json({ error: 'Ошибка сервера' });
