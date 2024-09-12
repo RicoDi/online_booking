@@ -6,33 +6,28 @@ flatpickr("#date-picker", {
 
 // Загрузка мастеров
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('/php/get_options.php?type=masters')
+    // Выполняем запрос на получение мастеров через ваш Node.js API
+    fetch('/api?type=Masster')
         .then(response => {
             if (!response.ok) {
-                throw new Error(`Network response was not ok: ${response.status}`);
+                throw new Error('Ошибка запроса: ' + response.status);
             }
             return response.json();
         })
         .then(data => {
-            const masterSelect = document.getElementById('dropdown_master');
-            if (masterSelect) {
-                if (!Array.isArray(data.masters)) {
-                    throw new Error('Некорректный формат данных: ожидается массив мастеров');
-                }
-                data.masters.forEach(master => {
-                    if (!master.id || !master.name) {
-                        throw new Error(`Некорректные данные мастера: ${JSON.stringify(master)}`);
-                    }
-                    const option = document.createElement('option');
-                    option.value = master.id;
-                    option.textContent = master.name;
-                    masterSelect.appendChild(option);
-                });
-            }
+            const selectElement = document.getElementById('mastersSelect'); // Предполагается, что у вас есть select для мастеров
+            data.masters.forEach(master => {
+                const option = document.createElement('option');
+                option.value = master.id;
+                option.textContent = master.name;
+                selectElement.appendChild(option);
+            });
         })
-        .catch(error => console.error('Ошибка при загрузке мастеров:', error));
+        .catch(error => {
+            console.error('Ошибка при получении данных: ', error);
+        });
 });
-
+ 
 // Загрузка услуг на основе выбранного мастера
 const masterSelect = document.getElementById('dropdown_master');
 if (masterSelect) {

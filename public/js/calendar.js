@@ -33,9 +33,9 @@ function generateTimeSlots() {
 }
 
 // Отключаем кнопку "Следующий" по умолчанию
-document.getElementById('nextBtn').addEventListener('click', function() {
-    const selectedDate = document.getElementById('datepicker').value;
-    const selectedTime = document.querySelector('.time-slot.active').innerText;
+// document.getElementById('nextBtn').addEventListener('click', function() {
+//     const selectedDate = document.getElementById('datepicker').value;
+//     const selectedTime = document.querySelector('.time-slot.active').innerText;
 
-    alert(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`);
-});
+//     alert(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`);
+// });
