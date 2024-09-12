@@ -1,7 +1,6 @@
 let currentPage = 1;
 const totalPages = 4;
 
-
 //Обновляет кнопки прогресса в зависимости от текущей страницы.
 //Проходит по всем страницам и добавляет или удаляет класс 'active'
 //для соответствующего элемента кнопки прогресса.
@@ -85,4 +84,10 @@ document.getElementById('bookingForm').addEventListener('submit', async function
 
     const result = await response.json();
     document.getElementById('responseMessage').innerText = result.message;
+});
+
+// Инициализация Flatpickr
+flatpickr("#date-picker", {
+  enableTime: false,
+  dateFormat: "Y-m-d",
 });
