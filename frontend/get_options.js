@@ -6,10 +6,10 @@ const port = 3000;
 
 // Установите параметры подключения к базе данных
 const dbConfig = {
-    host: "localhost",
-    user: "rico", // Замените на ваше имя пользователя
+    host: "185.252.24.105",
+    user: "Rico", // Замените на ваше имя пользователя
     password: "me3Hh2FaBt", // Замените на ваш пароль
-    database: "online_booking_db" // Замените на ваше имя базы данных
+    database: "online_booking_db1" // Замените на ваше имя базы данных
 };
 
 // Создайте подключение к базе данных
@@ -26,7 +26,7 @@ connection.connect((err) => {
 app.get('/', (req, res) => {
     const type = req.query.type || '';
 
-    if (type === 'masters') {
+    if (type === 'Masster') {
         connection.query("SELECT id, name FROM masters", (error, results) => {
             if (error) {
                 res.status(500).json({ error: 'Query failed: ' + error });
@@ -35,7 +35,7 @@ app.get('/', (req, res) => {
             res.json({ masters: results });
         });
 
-    } else if (type === 'services') {
+    } else if (type === 'Services') {
         const master_id = parseInt(req.query.master_id, 10) || 0;
         connection.query("SELECT id, name FROM services WHERE master_id = ?", [master_id], (error, results) => {
             if (error) {

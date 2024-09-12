@@ -25,17 +25,18 @@
         <div id="main_area">
             
 
-                <div class="page active" id="page1">
-                    <h2>Заполните информацию о себе</h2>
-                    <div class="client_data">
+                <div class="page active" id="page1" >
+                    <div class="data_container">
+                        <h2>Заполните информацию о себе</h2>
+                        <div class="client_data">
                         <label for="first-name">Ім'я</label>
                         <input type="text" id="name" name="first-name" required>
-                    </div>
-                    <div class="client_data">
+                        </div>
+                        <div class="client_data">
                         <label for="last-name">Фамілія *</label>
                         <input type="text" id="surname" name="last-name" required>
-                    </div>
-                    <div class="client_data">
+                        </div>
+                     <div class="client_data">
                         <label for="phone">Номер телефона *</label>
                         <input type="tel" id="phone" name="phone" required>
                     </div>
@@ -60,36 +61,32 @@
                         <label for="notes">Заметки</label>
                         <textarea id="notes" name="notes"></textarea>
                     </div>
-                    
+                </div>
                 
                 </div>
 
         
         
             <div class="page hide" id="page2">
-                <h2>Форма онлайн записи</h2>
-                <form id="bookingForm">
-                    <h2>Оберіть майстра</h2>
+                <h2>Оберіть майстра та послугу</h2>
+                <form id="bookingForm"class="masterVSservice">
+                    
                     <div class="dropdown_block">
-                        <label for="dropdown_master">Выберите мастера:</label>
+                        <label for="dropdown_master">Майстер:</label>
                         <select name="dropdown_master" id="dropdown_master">
-                            <option value="">Выберите мастера</option>
+                            <option value="Masster">Послуга</option>
                             <!-- Мастера будут загружены с сервера -->
                         </select>
                     </div>
         
-                    <h2>Тип услуги</h2>
                     <div class="dropdown_block">
                         <label for="dropdown_service">Выберите услугу</label>
-                        <select name="dropdown_service" id="dropdown_service">
+                        <select name="Services" id="dropdown_service">
                             <option value="">Loading...</option>
                         </select>
                     </div>
         
-                    <div class="dropdown_block">
-                        <label for="date-picker">Выберите дату</label>
-                        <input type="text" id="date-picker" name="date-picker" placeholder="Выберите дату">
-                    </div>
+                    
         
             </div>
             <div class="page hide" id="page3" >                
@@ -121,6 +118,7 @@
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 <script src="./front.js"></script>
 <script src="./calendar.js"></script>
+<script src="./get_options.js"></script>
 </body>
 </html>
 
