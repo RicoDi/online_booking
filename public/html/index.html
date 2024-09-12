@@ -4,30 +4,122 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Online Booking</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="./style.css">
+ 	<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+
 </head>
 <body>
     <div class="container">
-        <h1>Запись на услугу</h1>
-        <form id="bookingForm">
-            <label for="name">Имя:</label>
-            <input type="text" id="name" name="name" required>
+    <div class="main_container">
+        <div id="top_area">
+            <h1>Онлайн запис</h1>
+            <div>
+                <button id="progress1" class="progress-btn">1</button>
+                <button id="progress2" class="progress-btn">2</button>
+                <button id="progress3" class="progress-btn">3</button>
+                <button id="progress4" class="progress-btn">4</button>
+            </div>
+        </div>
+        <div id="main_area">
+            
 
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required>
+                <div class="page active" id="page1" >
+                    <div class="data_container">
+                        <h2>Заполните информацию о себе</h2>
+                        <div class="client_data">
+                        <label for="first-name">Ім'я</label>
+                        <input type="text" id="name" name="first-name" required>
+                        </div>
+                        <div class="client_data">
+                        <label for="last-name">Фамілія *</label>
+                        <input type="text" id="surname" name="last-name" required>
+                        </div>
+                     <div class="client_data">
+                        <label for="phone">Номер телефона *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="client_data">
+                        <label for="email">E-mail *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="client_data">
+                        <label for="address">Адрес</label>
+                        <input type="text" id="address" name="address">
+                    </div>
+                    <div class="client_data">
+                        <label for="city">Город</label>
+                        <input type="text" id="city" name="city">
+                    </div>
+                    <div class="client_data">
+                        <label for="zip">Индекс</label>
+                        <input type="text" id="zip" name="zip">
+                    </div>
+                    <div class="client_data">
+                        <label for="notes">Заметки</label>
+                        <textarea id="notes" name="notes"></textarea>
+                    </div>
+                </div>
+                
+                </div>
 
-            <label for="phone">Телефон:</label>
-            <input type="tel" id="phone" name="phone" required>
+        
+        
+            <div class="page hide" id="page2">
+                <h2>Оберіть майстра та послугу</h2>
+                <form id="bookingForm"class="masterVSservice">
+                    
+                    <div class="dropdown_block">
+                        <label for="dropdown_master">Майстер:</label>
+                        <select name="dropdown_master" id="dropdown_master">
+                            <option value="Masster">Послуга</option>
+                            <!-- Мастера будут загружены с сервера -->
+                        </select>
+                    </div>
+        
+                    <div class="dropdown_block">
+                        <label for="dropdown_service">Выберите услугу</label>
+                        <select name="Services" id="dropdown_service">
+                            <option value="">Loading...</option>
+                        </select>
+                    </div>
+        
+                    
+        
+            </div>
+            <div class="page hide" id="page3" >                
+                    <div class="calendar-container">
+                        <input type="text" id="datepicker" placeholder="Выберите дату">
+                    </div>
+                    
+                    <div class="time-container">
+                        <div id="time-slots">
+                            <!-- Временные слоты будут добавлены через JavaScript -->
+                        </div>
+                    </div>          
+            </div>
+            <div class="page hide" id="page4">
 
-            <label for="date">Дата и время записи:</label>
-            <input type="datetime-local" id="date" name="booking_date" required>
-
-            <button type="submit">Записаться</button>
-        </form>
-
-        <div id="responseMessage"></div>
+            </div>
+        </div>
+        </div>
+        <div id="bottom_area">
+            <div class="form-actions">
+                <button id="backBtn" type="button">Назад</button>
+            </div>
+            <div class="form-actions">
+                <button id="nextBtn" type="button">Далі</button>
+            </div>
+        </div>
     </div>
-
-    <script src="script.js"></script>
+</div>
+<script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+<script src="./front.js"></script>
+<script src="./calendar.js"></script>
+<script src="./get_options.js"></script>
 </body>
 </html>
+
+
