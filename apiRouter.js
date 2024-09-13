@@ -62,4 +62,25 @@ router.get('/services', async (req, res) => {
     }
 });
 
+// Эндпоинт для сохранения данных бронирования
+router.post('/confirm', async (req, res) => {
+    const { name, surname, phone, email, master, service, date } = req.body;
+
+    if (!name || !surname || !phone || !email || !master || !service || !date) {
+        return res.status(400).json({ error: 'Заполните все поля' });
+    }
+
+    try {
+        const sql = `
+            INSERT INTO bookings (name, surname, phone, email, master_id, service_id, date)
+            VALUES (?, ?, ?, ?, ?, ?, ?)
+        `;
+        await query(sql, [name, surname, phone, email, master, service, date]);
+        res.json({ success: true, message: 'Данные успешно сохранены' });
+    } catch (error) {
+        console.error('Ошибка при сохранении данных:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
 module.exports = router;

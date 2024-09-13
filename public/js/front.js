@@ -86,8 +86,3 @@ document.getElementById('bookingForm').addEventListener('submit', async function
     document.getElementById('responseMessage').innerText = result.message;
 });
 
-// Инициализация Flatpickr
-flatpickr("#date-picker", {
-  enableTime: false,
-  dateFormat: "Y-m-d",
-});

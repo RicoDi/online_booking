@@ -1,5 +1,3 @@
-// script.js
-
 // Включаем календарь с Flatpickr
 flatpickr("#datepicker", {
     minDate: "today",
@@ -19,6 +17,7 @@ function generateTimeSlots() {
     timeSlots.forEach(time => {
         const slot = document.createElement('div');
         slot.classList.add('time-slot');
+        slot.id = `time-slot-${time.replace(':', '-')}`;
         slot.innerText = time;
 
         // Добавляем событие для выбора времени
@@ -33,9 +32,8 @@ function generateTimeSlots() {
 }
 
 // Отключаем кнопку "Следующий" по умолчанию
-// document.getElementById('nextBtn').addEventListener('click', function() {
-//     const selectedDate = document.getElementById('datepicker').value;
-//     const selectedTime = document.querySelector('.time-slot.active').innerText;
+ document.getElementById('nextBtn').addEventListener('click', function() {
+    const selectedDate = document.getElementById('datepicker').value;
+     const selectedTime = document.querySelector('.time-slot.active').innerText;
 
-//     alert(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`);
-// });
+     console.log(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`); });

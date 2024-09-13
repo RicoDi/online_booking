@@ -93,7 +93,10 @@ label {
     opacity: 0.5;
     cursor: not-allowed;
   }
-
+.page_confirmation {
+    display: flex;
+    justify-content:space-between;
+}
 
 /* input {
     width: 100%;
@@ -129,23 +132,27 @@ button:hover {
 }
 
 /* Calendar */
-.calendar-container, .time-container {
-    display: inline-block;
+.time-container {
+/*    display: inline-block;*/
     vertical-align: top;
     width: 45%;
     margin: 0 2%;
+}
+#calendar_container{
+    display:flex;
+    justify-content:space-between;
+
 }
 
 #time-slots {
     display: flex;
     flex-direction: column;
-    align-items: center;
 }
 
 .time-slot {
     padding: 10px;
     margin: 5px 0;
-    width: 80%;
+    width: 45%%;
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 5px;

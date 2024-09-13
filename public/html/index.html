@@ -12,16 +12,16 @@
 </head>
 <body>
     <div class="container">
-    <div class="main_container">
-        <div id="top_area">
-            <h1>Онлайн запис</h1>
-            <div>
-                <button id="progress1" class="progress-btn">1</button>
-                <button id="progress2" class="progress-btn">2</button>
-                <button id="progress3" class="progress-btn">3</button>
-                <button id="progress4" class="progress-btn">4</button>
+        <div class="main_container">
+            <div id="top_area">
+                <h1>Онлайн запис</h1>
+                <div>
+                    <button id="progress1" class="progress-btn">1</button>
+                    <button id="progress2" class="progress-btn">2</button>
+                    <button id="progress3" class="progress-btn">3</button>
+                    <button id="progress4" class="progress-btn">4</button>
+                </div>
             </div>
-        </div>
         <div id="main_area">
             
 
@@ -72,8 +72,8 @@
                 <form id="bookingForm"class="masterVSservice">
                     
                     <div class="dropdown_block">
-                        <label for="Master">Майстер:</label>
-                        <select name="Master" id="Master">
+                        <label for="master">Майстер:</label>
+                        <select name="master" id="master">
                             <option value="Master">Послуга</option>
                             <!-- Мастера будут загружены с сервера -->
                         </select>
@@ -87,21 +87,33 @@
                     </div>
         
                     
-        
+                </form>
             </div>
             <div class="page hide" id="page3" >                
-                    <div class="calendar-container">
-                        <input type="text" id="datepicker" placeholder="Выберите дату">
-                    </div>
-                    
+                <form id="calendar_container" >
+                    <input type="text" id="datepicker" placeholder="Выберите дату" hidden>
+
+
                     <div class="time-container">
                         <div id="time-slots">
                             <!-- Временные слоты будут добавлены через JavaScript -->
                         </div>
-                    </div>          
+                    </div>
+                </form>
             </div>
             <div class="page hide" id="page4">
+                <div id="page_confirmation" class="page_confirmation">
+                    <div id="appointment_detail" class="appointment_detail">
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                    </div>
+<                   <div id="customer_detail" class="customer_detail">
 
+                    </div>
+                </div>
             </div>
         </div>
         </div>
@@ -110,11 +122,11 @@
                 <button id="backBtn" type="button">Назад</button>
             </div>
             <div class="form-actions">
-                <button id="nextBtn" type="button">Далі</button>
+                <button id="nextBtn" type="button" onclick="submitForm()">Далі</button>
             </div>
         </div>
     </div>
-</div>
+
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 <script src="/js/script.js"></script>
 <script src="/js/calendar.js"></script>
