@@ -32,7 +32,7 @@ var query = function query(sql, params) {
 }; // Эндпоинт для получения мастеров
 
 
-router.get('/Masters', function _callee(req, res) {
+router.get('/masters', function _callee(req, res) {
   var masters;
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {

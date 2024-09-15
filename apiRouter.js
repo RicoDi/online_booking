@@ -30,7 +30,7 @@ const query = (sql, params) => {
 };
 
 // Эндпоинт для получения мастеров
-router.get('/Masters', async (req, res) => {
+router.get('/masters', async (req, res) => {
     try {
         const masters = await query('SELECT * FROM Masters');
         console.log('Полученные мастера:', masters);
