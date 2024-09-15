@@ -36,12 +36,41 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMasters();
 });
 
-document.addEventListener('DOMContentLoaded', function()){
-    const serviceSelect = document.getElementById('Services');
+const { sequelize, Master, Service } = require('./models');
 
-    //Функция для загрузки услуг, которые предоставляет мастер
-    
+async function loadServicesForMaster(masterId) {
+  await sequelize.sync(); // Синхронизация моделей с базой данных
+
+  const master = await Master.findByPk(masterId, {
+    include: Service
+  });
+
+  if (master) {
+    return master.Services;
+  } else {
+    return null;
+  }
 }
+
+// Пример использования функции
+(async () => {
+  // Создание примера данных
+  await sequelize.sync({ force: true }); // Пересоздание таблиц
+  const master = await Master.create({ name: 'John Doe' });
+  const service1 = await Service.create({ name: 'Haircut', description: 'Basic haircut' });
+  const service2 = await Service.create({ name: 'Shave', description: 'Basic shave' });
+  await master.addServices([service1, service2]);
+
+  // Загрузка услуг для мастера
+  const services = await loadServicesForMaster(master.id);
+  if (services) {
+    services.forEach(service => {
+      console.log(`Service ID: ${service.id}, Name: ${service.name}`);
+    });
+  } else {
+    console.log('Master not found or no services available.');
+  }
+})();
 
 
 

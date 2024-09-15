@@ -70,7 +70,110 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   loadMasters();
-}); // // Обработка отправки формы
+});
+
+var _require = require('./models'),
+    sequelize = _require.sequelize,
+    Master = _require.Master,
+    Service = _require.Service;
+
+function loadServicesForMaster(masterId) {
+  var master;
+  return regeneratorRuntime.async(function loadServicesForMaster$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.next = 2;
+          return regeneratorRuntime.awrap(sequelize.sync());
+
+        case 2:
+          _context2.next = 4;
+          return regeneratorRuntime.awrap(Master.findByPk(masterId, {
+            include: Service
+          }));
+
+        case 4:
+          master = _context2.sent;
+
+          if (!master) {
+            _context2.next = 9;
+            break;
+          }
+
+          return _context2.abrupt("return", master.Services);
+
+        case 9:
+          return _context2.abrupt("return", null);
+
+        case 10:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  });
+} // Пример использования функции
+
+
+(function _callee() {
+  var master, service1, service2, services;
+  return regeneratorRuntime.async(function _callee$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.next = 2;
+          return regeneratorRuntime.awrap(sequelize.sync({
+            force: true
+          }));
+
+        case 2:
+          _context3.next = 4;
+          return regeneratorRuntime.awrap(Master.create({
+            name: 'John Doe'
+          }));
+
+        case 4:
+          master = _context3.sent;
+          _context3.next = 7;
+          return regeneratorRuntime.awrap(Service.create({
+            name: 'Haircut',
+            description: 'Basic haircut'
+          }));
+
+        case 7:
+          service1 = _context3.sent;
+          _context3.next = 10;
+          return regeneratorRuntime.awrap(Service.create({
+            name: 'Shave',
+            description: 'Basic shave'
+          }));
+
+        case 10:
+          service2 = _context3.sent;
+          _context3.next = 13;
+          return regeneratorRuntime.awrap(master.addServices([service1, service2]));
+
+        case 13:
+          _context3.next = 15;
+          return regeneratorRuntime.awrap(loadServicesForMaster(master.id));
+
+        case 15:
+          services = _context3.sent;
+
+          if (services) {
+            services.forEach(function (service) {
+              console.log("Service ID: ".concat(service.id, ", Name: ").concat(service.name));
+            });
+          } else {
+            console.log('Master not found or no services available.');
+          }
+
+        case 17:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  });
+})(); // // Обработка отправки формы
 // const bookingForm = document.getElementById("bookingForm");
 // if (bookingForm) {
 //     bookingForm.addEventListener("submit", function (e) {
