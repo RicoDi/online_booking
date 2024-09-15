@@ -1,12 +1,8 @@
 "use strict";
 
+// Загрузка доступных мастеров
 document.addEventListener('DOMContentLoaded', function () {
-  var masterSelect = document.getElementById('Masters');
-  /**
-   * Функция для загрузки мастеров с сервера и обновления выпадающего списка.
-   * Выполняет асинхронный запрос к API, обрабатывает ответ и обновляет DOM.
-   * В случае ошибки выводит сообщение в консоль.
-   */
+  var masterSelect = document.getElementById('Masters'); // Функция для загрузки мастеров
 
   function loadMasters() {
     var response, data;
@@ -47,13 +43,13 @@ document.addEventListener('DOMContentLoaded', function () {
             masterSelect.innerHTML = '<option value="">Выберите мастера</option>'; // Добавление новых опций
 
             data.masters.forEach(function (master) {
-              if (!master.id || !master.name || !master.surname) {
+              if (!master.idMasters || !master.Name || !master.Surname) {
                 throw new Error("\u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u043C\u0430\u0441\u0442\u0435\u0440\u0430: ".concat(JSON.stringify(master)));
               }
 
               var option = document.createElement('option');
-              option.value = master.id;
-              option.textContent = "".concat(master.name, " ").concat(master.surname);
+              option.value = master.idMasters;
+              option.textContent = "".concat(master.Name, " ").concat(master.Surname);
               masterSelect.appendChild(option);
             });
             _context.next = 18;
@@ -74,115 +70,33 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   loadMasters();
-});
-var masterSelect = document.getElementById("dropdown_master");
-
-if (masterSelect) {
-  masterSelect.addEventListener("change", function () {
-    var masterId = this.value;
-
-    if (masterId) {
-      fetch("/api/services?master_id=".concat(masterId)) // изменённый путь
-      .then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok: ".concat(response.status));
-        }
-
-        return response.json();
-      }).then(function (data) {
-        var serviceSelect = document.getElementById("dropdown_service");
-
-        if (serviceSelect) {
-          serviceSelect.innerHTML = '<option value="">Выберите услугу</option>';
-
-          if (!Array.isArray(data.services)) {
-            throw new Error("Некорректный формат данных: ожидается массив услуг");
-          }
-
-          data.services.forEach(function (service) {
-            if (!service.id || !service.name) {
-              throw new Error("\u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u0443\u0441\u043B\u0443\u0433\u0438: ".concat(JSON.stringify(service)));
-            }
-
-            var option = document.createElement("option");
-            option.value = service.id;
-            option.textContent = service.name;
-            serviceSelect.appendChild(option);
-          });
-        }
-      })["catch"](function (error) {
-        return console.error("Ошибка при загрузке услуг:", error);
-      });
-    }
-  });
-} // Загрузка услуг на основе выбранного мастера
-
-
-var masterSelectService = document.getElementById("dropdown_master");
-
-if (masterSelectService) {
-  masterSelectService.addEventListener("change", function () {
-    var masterId = this.value;
-
-    if (masterId) {
-      fetch("/api/services?master_id=".concat(masterId)).then(function (response) {
-        if (!response.ok) {
-          throw new Error("Network response was not ok: ".concat(response.status));
-        }
-
-        return response.json();
-      }).then(function (data) {
-        var serviceSelect = document.getElementById("dropdown_service");
-
-        if (serviceSelect) {
-          serviceSelect.innerHTML = '<option value="">Выберите услугу</option>';
-
-          if (!Array.isArray(data.services)) {
-            throw new Error("Некорректный формат данных: ожидается массив услуг");
-          }
-
-          data.services.forEach(function (service) {
-            if (!service.id || !service.name) {
-              throw new Error("\u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u0443\u0441\u043B\u0443\u0433\u0438: ".concat(JSON.stringify(service)));
-            }
-
-            var option = document.createElement("option");
-            option.value = service.id;
-            option.textContent = service.name;
-            serviceSelect.appendChild(option);
-          });
-        }
-      })["catch"](function (error) {
-        return console.error("Ошибка при загрузке услуг:", error);
-      });
-    }
-  });
-} // Обработка отправки формы
-
-
-var bookingForm = document.getElementById("bookingForm");
-
-if (bookingForm) {
-  bookingForm.addEventListener("submit", function (e) {
-    e.preventDefault();
-    var formData = new FormData(this);
-    fetch("/php/process_form.php", {
-      method: "POST",
-      body: formData
-    }).then(function (response) {
-      if (!response.ok) {
-        throw new Error("Network response was not ok: ".concat(response.status));
-      }
-
-      return response.json();
-    }).then(function (data) {
-      var responseMessage = document.getElementById("responseMessage");
-
-      if (responseMessage) {
-        responseMessage.textContent = data.message;
-      }
-    })["catch"](function (error) {
-      return console.error("Ошибка при отправке формы:", error);
-    });
-  });
-}
+}); // // Обработка отправки формы
+// const bookingForm = document.getElementById("bookingForm");
+// if (bookingForm) {
+//     bookingForm.addEventListener("submit", function (e) {
+//         e.preventDefault();
+//         const formData = new FormData(this);
+//         fetch("/php/process_form.php", {
+//             method: "POST",
+//             body: formData,
+//         })
+//             .then((response) => {
+//                 if (!response.ok) {
+//                     throw new Error(
+//                         `Network response was not ok: ${response.status}`
+//                     );
+//                 }
+//                 return response.json();
+//             })
+//             .then((data) => {
+//                 const responseMessage =
+//                     document.getElementById("responseMessage");
+//                 if (responseMessage) {
+//                     responseMessage.textContent = data.message;
+//                 }
+//             })
+//             .catch((error) =>
+//                 console.error("Ошибка при отправке формы:", error)
+//             );
+//     });
+// }
