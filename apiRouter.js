@@ -7,7 +7,7 @@ const pool = mysql2.createPool({
     host: '185.252.24.105',
     user: 'rico',
     password: 'me3Hh2FaBt',
-    database: 'online_booking_db1'
+    database: 'online_booking_db'
 });
 
 pool.getConnection((err, connection) => {
