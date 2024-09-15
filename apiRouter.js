@@ -3,9 +3,9 @@ const router = express.Router();
 const mysql = require('mysql2');
 
 // Создание пула соединений
-const pool = mysql.createPool({
+const pool = mysql2.createPool({
     host: '185.252.24.105',
-    user: 'Rico',
+    user: 'rico',
     password: 'me3Hh2FaBt',
     database: 'online_booking_db1'
 });

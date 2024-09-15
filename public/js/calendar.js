@@ -11,7 +11,7 @@ flatpickr("#datepicker", {
 
 // Функция для генерации слотов времени
 function generateTimeSlots() {
-    const timeSlots = ["09:00","10:00",,"11:00","12:00", "13:00", "14:00", "15:00", "16:00","17:00","18:00"];
+    const timeSlots = ["09:00","10:00","11:00","12:00", "13:00", "14:00", "15:00", "16:00","17:00","18:00"];
     const timeSlotsContainer = document.getElementById('time-slots');
     
     timeSlots.forEach(time => {
@@ -31,9 +31,9 @@ function generateTimeSlots() {
     });
 }
 
-// Отключаем кнопку "Следующий" по умолчанию
- document.getElementById('nextBtn').addEventListener('click', function() {
-    const selectedDate = document.getElementById('datepicker').value;
-     const selectedTime = document.querySelector('.time-slot.active').innerText;
+// // Отключаем кнопку "Следующий" по умолчанию
+//  document.getElementById('nextBtn').addEventListener('click', function() {
+//     const selectedDate = document.getElementById('datepicker').value;
+//      const selectedTime = document.querySelector('.time-slot.active').innerText;
 
-     console.log(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`); });
+//      console.log(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`); });

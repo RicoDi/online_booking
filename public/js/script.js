@@ -1,21 +1,21 @@
-function submiteForm() {
-    let name document.getElementById ('name').value;
-    let surname document.getElementById ('surname').value;
-    let phone document.getElementById ('phone').value;
-    let email document.getElementById ('email').value;
-    let date document.getElementById('selectedDate').value;
-    let time document.getElementById('selectedTime').value;
-}
-let user{
-    name: name,
-    surname: surname,
-    phone: phone,
-    email: email
-};
-let booking{
-    date:selectedDate;
-    time:selectedTime;
-    }
+// function submiteForm() {
+//     let name = document.getElementById('name').value;
+//     let surname = document.getElementById('surname').value;
+//     let phone = document.getElementById('phone').value;
+//     let email = document.getElementById('email').value;
+//     let date = document.getElementById('selectedDate').value;
+//     let time = document.getElementById('selectedTime').value;
+// }
+// let user = {
+//     name: name,
+//     surname: surname,
+//     phone: phone,
+//     email: email
+// };
+// let booking = { 
+//     date:selectedDate,
+//     time:selectedTime,
+//     };
 
 
 const masterSelect = document.getElementById("dropdown_master");

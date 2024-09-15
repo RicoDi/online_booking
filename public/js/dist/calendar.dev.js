@@ -13,7 +13,7 @@ flatpickr("#datepicker", {
 }); // Функция для генерации слотов времени
 
 function generateTimeSlots() {
-  var timeSlots = ["09:00", "10:00",, "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+  var timeSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
   var timeSlotsContainer = document.getElementById('time-slots');
   timeSlots.forEach(function (time) {
     var slot = document.createElement('div');
@@ -30,11 +30,8 @@ function generateTimeSlots() {
     });
     timeSlotsContainer.appendChild(slot);
   });
-} // Отключаем кнопку "Следующий" по умолчанию
-
-
-document.getElementById('nextBtn').addEventListener('click', function () {
-  var selectedDate = document.getElementById('datepicker').value;
-  var selectedTime = document.querySelector('.time-slot.active').innerText;
-  console.log("\u0412\u044B \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0434\u0430\u0442\u0443: ".concat(selectedDate, ", \u0432\u0440\u0435\u043C\u044F: ").concat(selectedTime));
-});
+} // // Отключаем кнопку "Следующий" по умолчанию
+//  document.getElementById('nextBtn').addEventListener('click', function() {
+//     const selectedDate = document.getElementById('datepicker').value;
+//      const selectedTime = document.querySelector('.time-slot.active').innerText;
+//      console.log(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`); });
