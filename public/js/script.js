@@ -36,6 +36,12 @@ document.addEventListener('DOMContentLoaded', function() {
     loadMasters();
 });
 
+document.addEventListener('DOMContentLoaded', function()){
+    const serviceSelect = document.getElementById('Services');
+
+    //Функция для загрузки услуг, которые предоставляет мастер
+    
+}
 
 
 
