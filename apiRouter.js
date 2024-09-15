@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const mysql = require('mysql2');
+const mysql = require('mysql');
 
 // Создание пула соединений
-const pool = mysql.createPool({
+const pool = mysql2.createPool({
     host: '185.252.24.105',
     user: 'Rico',
     password: 'me3Hh2FaBt',

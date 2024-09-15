@@ -30,11 +30,8 @@ function generateTimeSlots() {
     });
     timeSlotsContainer.appendChild(slot);
   });
-} // Отключаем кнопку "Следующий" по умолчанию
-
-
-document.getElementById('nextBtn').addEventListener('click', function () {
-  var selectedDate = document.getElementById('datepicker').value;
-  var selectedTime = document.querySelector('.time-slot.active').innerText;
-  console.log("\u0412\u044B \u0432\u044B\u0431\u0440\u0430\u043B\u0438 \u0434\u0430\u0442\u0443: ".concat(selectedDate, ", \u0432\u0440\u0435\u043C\u044F: ").concat(selectedTime));
-});
+} // // Отключаем кнопку "Следующий" по умолчанию
+//  document.getElementById('nextBtn').addEventListener('click', function() {
+//     const selectedDate = document.getElementById('datepicker').value;
+//      const selectedTime = document.querySelector('.time-slot.active').innerText;
+//      console.log(`Вы выбрали дату: ${selectedDate}, время: ${selectedTime}`); });
