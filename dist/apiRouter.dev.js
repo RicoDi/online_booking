@@ -4,7 +4,7 @@ var express = require('express');
 
 var router = express.Router();
 
-var mysql = require('mysql2'); // Создание пула соединений
+var mysql2 = require('mysql2'); // Создание пула соединений
 
 
 var pool = mysql2.createPool({
