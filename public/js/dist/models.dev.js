@@ -23,7 +23,7 @@ var Service = sequelize.define('Service', {
   }
 }); // Определение таблицы связи между мастерами и услугами
 
-var MasterService = sequelize.define('MasterService', {}); // Связь между мастерами и услугами
+var MasterService = sequelize.define('MasterServices', {}); // Связь между мастерами и услугами
 
 Master.belongsToMany(Service, {
   through: MasterService

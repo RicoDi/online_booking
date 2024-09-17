@@ -1,6 +1,10 @@
 "use strict";
 
-// Загрузка доступных мастеров
+var clientBooking;
+var selectedDate = null;
+var selectedTime = null;
+var currentPage = 1;
+var totalPages = 4;
 document.addEventListener('DOMContentLoaded', function () {
   var masterSelect = document.getElementById('Masters'); // Функция для загрузки мастеров
 
@@ -70,136 +74,180 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   loadMasters();
-});
+}); // Функция для обработки отправки формы
 
-var _require = require('./models'),
-    sequelize = _require.sequelize,
-    Master = _require.Master,
-    Service = _require.Service;
+function handleFormSubmit(event) {
+  event.preventDefault(); // Получаем значения из полей формы user_data
 
-function loadServicesForMaster(masterId) {
-  var master;
-  return regeneratorRuntime.async(function loadServicesForMaster$(_context2) {
-    while (1) {
-      switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.next = 2;
-          return regeneratorRuntime.awrap(sequelize.sync());
+  var name = document.getElementById('name').value;
+  var surname = document.getElementById('surname').value;
+  var phone = document.getElementById('phone').value;
+  var email = document.getElementById('email').value;
+  var masters = document.getElementById('Masters').value;
+  var services = document.getElementById('Services').value;
+  var time = selectedTime; // Создаем объект booking
 
-        case 2:
-          _context2.next = 4;
-          return regeneratorRuntime.awrap(Master.findByPk(masterId, {
-            include: Service
-          }));
+  var booking = {
+    name: name,
+    surname: surname,
+    phone: phone,
+    email: email,
+    master: masters,
+    service: services,
+    date: selectedDate,
+    time: time
+  };
+  console.log(booking);
+} // Настройка событий для страницы 4
 
-        case 4:
-          master = _context2.sent;
 
-          if (!master) {
-            _context2.next = 9;
-            break;
-          }
+function setupPage4Events() {
+  console.log("Setting up events for page 4"); // Обновление деталей бронирования
 
-          return _context2.abrupt("return", master.Services);
+  var detailName = document.getElementById('detailName');
+  var detailPhone = document.getElementById('detailPhone');
+  var detailEmail = document.getElementById('detailEmail');
+  var detailMaster = document.getElementById('detailMaster');
+  var detailService = document.getElementById('detailService');
+  var detailDate = document.getElementById('detailDate');
+  var detailTime = document.getElementById('detailTime');
+  var name = document.getElementById('name').value;
+  var surname = document.getElementById('surname').value;
+  var phone = document.getElementById('phone').value;
+  var email = document.getElementById('email').value;
+  var master = document.getElementById('Masters').value;
+  var service = document.getElementById('Services').value;
+  var date = selectedDate;
+  var time = selectedTime;
+  detailName.textContent = surname + " " + name;
+  detailPhone.textContent = phone;
+  detailEmail.textContent = email;
+  detailMaster.textContent = master;
+  detailService.textContent = service;
+  detailDate.textContent = date;
+  detailTime.textContent = time; // Добавьте другие необходимые события и настройки для страницы 4
+} // Настройка календаря с помощью flatpickr
 
-        case 9:
-          return _context2.abrupt("return", null);
 
-        case 10:
-        case "end":
-          return _context2.stop();
-      }
-    }
+var dateflatpickr = flatpickr("#datepicker", {
+  minDate: "today",
+  inline: true,
+  dateFormat: "d-m-y",
+  onChange: function onChange(selectedDates, dateStr, instance) {
+    document.getElementById('timeSlots').innerHTML = ''; // Очистка слотов времени при изменении даты
+
+    selectedDate = dateStr; // Сохраняем выбранную дату
+
+    generateTimeSlots(); // Генерация временных слотов
+  }
+}); // Функция для генерации слотов времени
+
+function generateTimeSlots() {
+  var timeSlots = ["09:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"];
+  var timeSlotsContainer = document.getElementById('timeSlots');
+  timeSlots.forEach(function (time) {
+    var slot = document.createElement('div');
+    slot.classList.add('time-slot');
+    slot.id = "time-slot-".concat(time.replace(':', '-'));
+    slot.innerText = time; // Добавляем событие для выбора времени
+
+    slot.addEventListener('click', function () {
+      document.querySelectorAll('.time-slot').forEach(function (slot) {
+        return slot.classList.remove('active');
+      });
+      this.classList.add('active');
+      selectedTime = time; // Сохраняем выбранное время
+
+      document.getElementById('nextBtn').disabled = false;
+    });
+    timeSlotsContainer.appendChild(slot);
   });
-} // Пример использования функции
+} // Обновление объекта бронирования
 
 
-(function _callee() {
-  var master, service1, service2, services;
-  return regeneratorRuntime.async(function _callee$(_context3) {
-    while (1) {
-      switch (_context3.prev = _context3.next) {
-        case 0:
-          _context3.next = 2;
-          return regeneratorRuntime.awrap(sequelize.sync({
-            force: true
-          }));
+function updateBookingObject() {
+  var booking = {
+    name: document.getElementById('name').value,
+    surname: document.getElementById('surname').value,
+    phone: document.getElementById('phone').value,
+    email: document.getElementById('email').value,
+    master: document.getElementById('Masters').value,
+    service: document.getElementById('Services').value,
+    date: selectedDate,
+    time: selectedTime
+  };
+  console.log(booking);
+} // Обновление кнопок прогресса в зависимости от текущей страницы
 
-        case 2:
-          _context3.next = 4;
-          return regeneratorRuntime.awrap(Master.create({
-            name: 'John Doe'
-          }));
 
-        case 4:
-          master = _context3.sent;
-          _context3.next = 7;
-          return regeneratorRuntime.awrap(Service.create({
-            name: 'Haircut',
-            description: 'Basic haircut'
-          }));
+function updateProgress() {
+  for (var i = 1; i <= totalPages; i++) {
+    var progressBtn = document.getElementById("progress".concat(i));
 
-        case 7:
-          service1 = _context3.sent;
-          _context3.next = 10;
-          return regeneratorRuntime.awrap(Service.create({
-            name: 'Shave',
-            description: 'Basic shave'
-          }));
-
-        case 10:
-          service2 = _context3.sent;
-          _context3.next = 13;
-          return regeneratorRuntime.awrap(master.addServices([service1, service2]));
-
-        case 13:
-          _context3.next = 15;
-          return regeneratorRuntime.awrap(loadServicesForMaster(master.id));
-
-        case 15:
-          services = _context3.sent;
-
-          if (services) {
-            services.forEach(function (service) {
-              console.log("Service ID: ".concat(service.id, ", Name: ").concat(service.name));
-            });
-          } else {
-            console.log('Master not found or no services available.');
-          }
-
-        case 17:
-        case "end":
-          return _context3.stop();
-      }
+    if (i <= currentPage) {
+      progressBtn.classList.add('active');
+    } else {
+      progressBtn.classList.remove('active');
     }
-  });
-})(); // // Обработка отправки формы
-// const bookingForm = document.getElementById("bookingForm");
-// if (bookingForm) {
-//     bookingForm.addEventListener("submit", function (e) {
-//         e.preventDefault();
-//         const formData = new FormData(this);
-//         fetch("/php/process_form.php", {
-//             method: "POST",
-//             body: formData,
-//         })
-//             .then((response) => {
-//                 if (!response.ok) {
-//                     throw new Error(
-//                         `Network response was not ok: ${response.status}`
-//                     );
-//                 }
-//                 return response.json();
-//             })
-//             .then((data) => {
-//                 const responseMessage =
-//                     document.getElementById("responseMessage");
-//                 if (responseMessage) {
-//                     responseMessage.textContent = data.message;
-//                 }
-//             })
-//             .catch((error) =>
-//                 console.error("Ошибка при отправке формы:", error)
-//             );
-//     });
-// }
+  }
+} // Обновление текста и типа кнопки "Далее"
+
+
+function updateButtons() {
+  var nextBtn = document.getElementById("nextBtn");
+
+  if (currentPage === totalPages) {
+    nextBtn.textContent = "Підтверджую"; // Меняем текст кнопки на "Submit"
+
+    nextBtn.setAttribute("type", "submit"); // Меняем тип кнопки на "submit"
+  } else {
+    nextBtn.textContent = "Далі"; // Меняем текст кнопки на "Next"
+
+    nextBtn.setAttribute("type", "button"); // Меняем тип кнопки на "button"
+  }
+} // Механизм переключения страниц
+
+
+function showPage(page) {
+  console.log("showPage" + page);
+
+  for (var i = 1; i <= totalPages; i++) {
+    var PageElement = document.getElementById("page".concat(i));
+
+    if (i === page) {
+      PageElement.classList.add('active');
+      PageElement.classList.remove('hide');
+
+      if (i === 4) {
+        setupPage4Events();
+      }
+    } else {
+      PageElement.classList.add('hide');
+      PageElement.classList.remove('active');
+    }
+  }
+
+  updateProgress();
+  updateButtons();
+} // Обработчик кнопки "Назад"
+
+
+document.getElementById("backBtn").addEventListener("click", function () {
+  if (currentPage > 1) {
+    currentPage--;
+    showPage(currentPage);
+  }
+}); // Обработчик кнопки "Далее"
+
+document.getElementById('nextBtn').addEventListener('click', function () {
+  if (currentPage < totalPages) {
+    currentPage++;
+    showPage(currentPage);
+
+    if (currentPage === totalPages) {
+      updateBookingObject();
+    }
+  }
+}); // Начальное отображение первой страницы
+
+showPage(currentPage);

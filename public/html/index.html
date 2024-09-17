@@ -23,10 +23,11 @@
                 </div>
             </div>
         <div id="main_area">
-            
+           
+            <form id="user_data"  onsubmit="handleFormSubmit">
 
                 <div class="page active" id="page1" >
-                    <form id="user_data" class="data_container">
+                    <div class="data_container">
                         <h2>Заполните информацию о себе</h2>
                         <div class="client_data">
                             <label for="name">Ім'я</label>
@@ -61,15 +62,17 @@
                             <label for="notes">Заметки</label>
                             <textarea id="notes" name="notes"></textarea>
                         </div> -->
-                    </form>
+                    </div>
                 
                 </div>
+             
+                
 
         
         
             <div class="page hide" id="page2">
                 <h2>Оберіть майстра та послугу</h2>
-                <form id="bookingForm"class="masterVSservice">
+                <div class="masterVSservice">
                     
                     <div class="dropdown_block">
                         <label for="Masters">Майстер:</label>
@@ -83,38 +86,42 @@
                         <label for="Services">Выберите услугу</label>
                         <select name="Services" id="Services">
                             <option value="">Loading...</option>
+                            <!-- Услуги будут загружены в зависимости от мастера -->
                         </select>
                     </div>
         
-                    
-                </form>
+                </div>
             </div>
             <div class="page hide" id="page3" >                
-                <form id="calendar_container" >
+                <div class="calendar_container">
                     <input type="text" id="datepicker" placeholder="Выберите дату" hidden>
 
 
                     <div class="time-container">
-                        <div id="time-slots">
+                        <div id="timeSlots">
                             <!-- Временные слоты будут добавлены через JavaScript -->
                         </div>
+
                     </div>
-                </form>
+                    
+                </div>
             </div>
             <div class="page hide" id="page4">
                 <div id="page_confirmation" class="page_confirmation">
                     <div id="appointment_detail" class="appointment_detail">
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        <p>Прізвище Ім'я:<b id="detailName"></b></p>
+                        <p>Номер телефону:<b id="detailPhone"></b></p>
+                        <p>Email адреса:<b id="detailEmail"></b></p>    
                     </div>
-<                   <div id="customer_detail" class="customer_detail">
-
+                   <div id="customer_detail" class="customer_detail">
+                        <p>Обраний майстер<b id="detailMaster"></b></p>
+                        <p>Обрана послуга<b id="detailService"></b></p>
+                        <p>Дата<b id="detailDate"></b></p>
+                        <p>Час<b id="detailTime"></b></p>
                     </div>
                 </div>
-            </div>
+            </form>
+        </div>
         </div>
         </div>
         <div id="bottom_area">
@@ -129,8 +136,6 @@
 
 <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js" integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 <script src="/js/script.js"></script>
-<script src="/js/calendar.js"></script>
-<script src="/js/front.js"></script>
 </body>
 </html>
 

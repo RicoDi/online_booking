@@ -138,7 +138,7 @@ button:hover {
     width: 45%;
     margin: 0 2%;
 }
-#calendar_container{
+.calendar_container{
     display:flex;
     justify-content:space-between;
 
@@ -204,3 +204,8 @@ button:hover {
     background-color: #555;
 }
 
+.page_confirmation{
+    display: flex;
+    justify-content:space-between;
+
+}
