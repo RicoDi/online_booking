@@ -20,6 +20,19 @@ app.use("/api", apiRouter);
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
+// Подключаем роутер для админки
+const adminRouter = require('./routes/adminRouter');
+app.use('/admin', adminRouter);
+
+// Маршрут для админки
+app.get("/admin/dashboard", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "admin", "dashboard.html"));
+});
+
+// Маршрут для страницы управления мастерами
+app.get("/admin/masters", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "admin", "masters.html"));
+});
 
 // Запуск сервера
 app.listen(PORT, () => {

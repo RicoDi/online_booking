@@ -83,4 +83,215 @@ router.post('/confirm', async (req, res) => {
     }
 });
 
+
+// Эндпоинт для получения бронирований. ADMIN
+router.get('/bookings', async (req, res) => {
+    try {
+        const bookings = await query('SELECT * FROM bookings');
+        res.json({ bookings });
+    } catch (error) {
+        console.error('Ошибка при получении бронирований:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Добавление мастера
+router.post('/masters', async (req, res) => {
+    const { name, surname } = req.body;
+    if (!name || !surname) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
+    }
+
+    try {
+        await query('INSERT INTO Masters (name, surname) VALUES (?, ?)', [name, surname]);
+        res.status(201).json({ message: 'Мастер добавлен' });
+    } catch (error) {
+        console.error('Ошибка при добавлении мастера:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Получение мастера по ID
+router.get('/masters/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const master = await query('SELECT * FROM Masters WHERE id = ?', [id]);
+        if (!master.length) {
+            return res.status(404).json({ error: 'Мастер не найден' });
+        }
+        res.json(master[0]);
+    } catch (error) {
+        console.error('Ошибка при получении мастера:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Обновление мастера
+router.put('/masters/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, surname } = req.body;
+    if (!name || !surname) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
+    }
+
+    try {
+        await query('UPDATE Masters SET name = ?, surname = ? WHERE id = ?', [name, surname, id]);
+        res.json({ message: 'Мастер обновлен' });
+    } catch (error) {
+        console.error('Ошибка при обновлении мастера:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Удаление мастера
+router.delete('/masters/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await query('DELETE FROM Masters WHERE id = ?', [id]);
+        res.json({ message: 'Мастер удален' });
+    } catch (error) {
+        console.error('Ошибка при удалении мастера:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Добавление услуги
+router.post('/services', async (req, res) => {
+    const { name, master_id } = req.body;
+    if (!name || !master_id) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
+    }
+
+    try {
+        await query('INSERT INTO Services (name, master_id) VALUES (?, ?)', [name, master_id]);
+        res.status(201).json({ message: 'Услуга добавлена' });
+    } catch (error) {
+        console.error('Ошибка при добавлении услуги:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Получение услуги по ID
+router.get('/services/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const service = await query(`
+            SELECT s.id, s.name, s.master_id 
+            FROM Services s
+            WHERE s.id = ?
+        `, [id]);
+        if (!service.length) {
+            return res.status(404).json({ error: 'Услуга не найдена' });
+        }
+        res.json(service[0]);
+    } catch (error) {
+        console.error('Ошибка при получении услуги:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Обновление услуги
+router.put('/services/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, master_id } = req.body;
+    if (!name || !master_id) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
+    }
+
+    try {
+        await query('UPDATE Services SET name = ?, master_id = ? WHERE id = ?', [name, master_id, id]);
+        res.json({ message: 'Услуга обновлена' });
+    } catch (error) {
+        console.error('Ошибка при обновлении услуги:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Удаление услуги
+router.delete('/services/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await query('DELETE FROM Services WHERE id = ?', [id]);
+        res.json({ message: 'Услуга удалена' });
+    } catch (error) {
+        console.error('Ошибка при удалении услуги:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Эндпоинт для получения списка бронирований с фильтрацией
+router.get('/bookings', async (req, res) => {
+    const { master_id, date, client } = req.query;
+    let queryStr = `
+        SELECT b.id, b.date, b.name, b.surname, b.phone, b.email, 
+               m.name as master_name, s.name as service_name
+        FROM bookings b
+        JOIN Masters m ON b.master_id = m.id
+        JOIN Services s ON b.service_id = s.id
+        WHERE 1=1
+    `;
+    const queryParams = [];
+
+    // Фильтрация по мастеру
+    if (master_id) {
+        queryStr += ' AND b.master_id = ?';
+        queryParams.push(master_id);
+    }
+
+    // Фильтрация по дате
+    if (date) {
+        queryStr += ' AND DATE(b.date) = ?';
+        queryParams.push(date);
+    }
+
+    // Фильтрация по клиенту (имя, фамилия)
+    if (client) {
+        queryStr += ' AND (LOWER(b.name) LIKE ? OR LOWER(b.surname) LIKE ?)';
+        queryParams.push(`%${client}%`, `%${client}%`);
+    }
+
+    try {
+        const bookings = await query(queryStr, queryParams);
+        res.json({ bookings });
+    } catch (error) {
+        console.error('Ошибка при получении бронирований:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Эндпоинт для получения деталей бронирования
+router.get('/bookings/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const booking = await query(`
+            SELECT b.id, b.date, b.name, b.surname, b.phone, b.email, 
+                   m.name as master_name, s.name as service_name
+            FROM bookings b
+            JOIN Masters m ON b.master_id = m.id
+            JOIN Services s ON b.service_id = s.id
+            WHERE b.id = ?
+        `, [id]);
+        if (!booking.length) {
+            return res.status(404).json({ error: 'Бронирование не найдено' });
+        }
+        res.json(booking[0]);
+    } catch (error) {
+        console.error('Ошибка при получении бронирования:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Эндпоинт для удаления бронирования
+router.delete('/bookings/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        await query('DELETE FROM bookings WHERE id = ?', [id]);
+        res.json({ message: 'Бронирование удалено' });
+    } catch (error) {
+        console.error('Ошибка при удалении бронирования:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+
 module.exports = router;

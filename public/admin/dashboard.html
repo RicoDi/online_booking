@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админка - Дашборд</title>
+    <link rel="stylesheet" href="/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div class="dashboard">
+        <h1>Дашборд</h1>
+
+        <!-- Обзор ключевых показателей -->
+        <div class="stats">
+            <div class="stat-card">
+                <h2 id="mastersCount">Мастера</h2>
+                <p>Количество: <span id="mastersTotal">0</span></p>
+            </div>
+            <div class="stat-card">
+                <h2 id="servicesCount">Услуги</h2>
+                <p>Количество: <span id="servicesTotal">0</span></p>
+            </div>
+            <div class="stat-card">
+                <h2 id="bookingsCount">Бронирования</h2>
+                <p>Количество: <span id="bookingsTotal">0</span></p>
+            </div>
+        </div>
+
+        <!-- График бронирований -->
+        <div class="chart-container">
+            <canvas id="bookingsChart"></canvas>
+        </div>
+
+        <!-- Быстрые ссылки -->
+        <div class="quick-links">
+            <a href="/admin/add_master.html" class="quick-link">Добавить мастера</a>
+            <a href="/admin/bookings.html" class="quick-link">Просмотр бронирований</a>
+        </div>
+    </div>
+
+    <script>
+        // Загрузка данных для статистики
+        async function loadStats() {
+            try {
+                // Количество мастеров
+                const mastersRes = await fetch('/api/masters');
+                const mastersData = await mastersRes.json();
+                document.getElementById('mastersTotal').textContent = mastersData.masters.length;
+
+                // Количество услуг
+                const servicesRes = await fetch('/api/services?master_id=1'); // Пример для конкретного мастера
+                const servicesData = await servicesRes.json();
+                document.getElementById('servicesTotal').textContent = servicesData.services.length;
+
+                // Количество бронирований
+                const bookingsRes = await fetch('/api/bookings');
+                const bookingsData = await bookingsRes.json();
+                document.getElementById('bookingsTotal').textContent = bookingsData.bookings.length;
+                
+                // Обновление графика бронирований
+                updateBookingsChart(bookingsData.bookings);
+            } catch (error) {
+                console.error('Ошибка при загрузке статистики:', error);
+            }
+        }
+
+        // Инициализация графика бронирований
+        function updateBookingsChart(bookings) {
+            const ctx = document.getElementById('bookingsChart').getContext('2d');
+            const dates = bookings.map(booking => booking.date.split('T')[0]); // Получаем даты бронирований
+            const countByDate = dates.reduce((acc, date) => {
+                acc[date] = (acc[date] || 0) + 1;
+                return acc;
+            }, {});
+
+            const chartData = {
+                labels: Object.keys(countByDate),
+                datasets: [{
+                    label: 'Бронирования',
+                    data: Object.values(countByDate),
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: {
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        }
+
+        // Вызов функции при загрузке страницы
+        window.onload = loadStats;
+    </script>
+</body>
+</html>
