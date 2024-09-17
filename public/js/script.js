@@ -24,11 +24,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // Добавление новых опций
             data.masters.forEach(master => {
-                if (!master.idMasters || !master.Name || !master.Surname) {
+                if (!master.Id || !master.Name || !master.Surname) {
                     throw new Error(`Некорректные данные мастера: ${JSON.stringify(master)}`);
                 }
                 const option = document.createElement('option');
-                option.value = master.idMasters;
+                option.value = master.Id;
                 option.textContent = `${master.Name} ${master.Surname}`;
                 masterSelect.appendChild(option);
             });
@@ -40,6 +40,52 @@ document.addEventListener('DOMContentLoaded', function() {
     // Загрузка мастеров при загрузке страницы
     loadMasters();
 });
+
+
+
+// Получение select элемента с услугами
+const serviceSelect = document.getElementById('Services');
+
+// Функция для загрузки услуг в зависимости от выбранного мастера
+async function loadServicesForMaster(masterId) {
+    try {
+        if (!masterId) {
+            serviceSelect.innerHTML = '<option value="">Выберите мастера для услуг</option>';
+            return;
+        }
+
+        // Отправляем запрос на сервер для получения услуг мастера
+        const response = await fetch(`/api/services?master_id=${masterId}`);
+        if (!response.ok) {
+            throw new Error(`Ошибка сети: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!Array.isArray(data.services)) {
+            throw new Error('Неверный формат данных: ожидается массив услуг');
+        }
+
+        // Очистка текущих опций
+        serviceSelect.innerHTML = '<option value="">Выберите услугу</option>';
+
+        // Добавление опций для полученных услуг
+        data.services.forEach(service => {
+            const option = document.createElement('option');
+            option.value = service.id;
+            option.textContent = service.name;
+            serviceSelect.appendChild(option);
+        });
+    } catch (error) {
+        console.error('Ошибка при загрузке услуг:', error);
+    }
+}
+
+// Событие при изменении мастера
+document.getElementById('Masters').addEventListener('change', function() {
+    const selectedMasterId = this.value;
+    loadServicesForMaster(selectedMasterId);  // Загрузка услуг для выбранного мастера
+});
+
 
 // Функция для обработки отправки формы
 function handleFormSubmit(event) {
