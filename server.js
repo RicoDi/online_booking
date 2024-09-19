@@ -23,6 +23,7 @@ app.use("/api", apiRouter);
 
 // Маршрут для главной страницы
 app.get("/", (req, res) => {
+
     res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
 
