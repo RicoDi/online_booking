@@ -4,39 +4,42 @@ const bodyParser = require("body-parser");
 const app = express();
 
 
-// Импортируем наш роутер
-const apiRouter = require("./apiRouter");
-
-// Подключаем роутер для админки
-const adminRouter = require("./routes/adminRouter");
-app.use('/admin', adminRouter);
-
-// Указываем папку для статических файлов (CSS, JS, изображения и т.д.)
-app.use(express.static(path.join(__dirname, "public")));
-
 // Подключаем body-parser для обработки данных из форм
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Подключаем роутер для API
-app.use("/api", apiRouter);
+// Импортируем наш роутер
+const apiRouter = require("./routes/apiRouter");
+
+// Указываем папку для статических файлов (CSS, JS, изображения и т.д.)
+app.use(express.static(path.join(__dirname, "public")));
 
 // Маршрут для главной страницы
 app.get("/", (req, res) => {
-
     res.sendFile(path.join(__dirname, "public", "html", "index.html"));
 });
 
+// Подключаем роутер для API
+app.use("/api", apiRouter);
 
+
+
+// Подключаем роутер для админки
+const adminRouter = require("./routes/adminRouter");
 // Маршрут для админки
-app.get("/admin/dashboard", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "admin", "dashboard.html"));
+// Подключаем маршруты для админки
+app.use('/admin', adminRouter);
+
+app.get("/admin", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "admin", "adminIndex.html"));
 });
 
 // Маршрут для страницы управления мастерами
-app.get("/admin/masters", (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "admin", "masters.html"));
+app.get("/masters", (req, res) => {
+    res.sendFile(path.join(__dirname, "public", "html", "masters.html"));
 });
+
+
 
 
 const PORT = process.env.PORT || 3000;

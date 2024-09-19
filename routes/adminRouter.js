@@ -2,7 +2,32 @@ const express = require('express');
 const router = express.Router();
 // const { query } = require('../db'); // Ваша функция для выполнения запросов к базе данных
 
+// Маршрут для панели управления (dashboard)
+router.get('/dashboard', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/admin/adminIndex.html'));
+});
+
+
+
+// Маршрут для управления услугами
+router.get('/services', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/admin/services.html'));
+});
+
+// Маршрут для управления бронированиями
+router.get('/bookings', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/admin/bookings.html'));
+});
+
+
+
+
 // ========== Управление мастерами ==========
+
+// Маршрут для управления мастерами
+router.get('/masters', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/admin/masters'));
+});
 
 // GET /admin/masters: Получение списка мастеров
 router.get('/masters', async (req, res) => {
