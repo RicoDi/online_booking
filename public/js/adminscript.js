@@ -134,3 +134,4 @@ function closeMasterForm() {
 
 // Загрузка мастеров при загрузке страницы
 window.onload = loadMasters;
+

@@ -93,60 +93,64 @@ router.delete('/masters/:id', async (req, res) => {
 // ========== Управление услугами ==========
 
 // GET /admin/services: Получение списка услуг
-router.get('/services', async (req, res) => {
-    try {
-        const services = await query('SELECT * FROM Services');
-        res.json({ services });
-    } catch (error) {
-        console.error('Ошибка при получении услуг:', error);
-        res.status(500).json({ error: 'Ошибка сервера' });
-    }
-});
-
-// POST /admin/services: Добавление услуги
+// Добавление услуги
 router.post('/services', async (req, res) => {
-    const { name } = req.body;
-
-    if (!name) {
-        return res.status(400).json({ error: 'Необходимо указать название услуги' });
+    const { name, master_id } = req.body;
+    if (!name || !master_id) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
     }
 
     try {
-        const sql = 'INSERT INTO Services (name) VALUES (?)';
-        await query(sql, [name]);
-        res.json({ message: 'Услуга успешно добавлена' });
+        await query('INSERT INTO Services (name, master_id) VALUES (?, ?)', [name, master_id]);
+        res.status(201).json({ message: 'Услуга добавлена' });
     } catch (error) {
         console.error('Ошибка при добавлении услуги:', error);
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
 
-// PUT /admin/services/:id: Редактирование услуги
+// Получение услуги по ID
+router.get('/services/:id', async (req, res) => {
+    const { id } = req.params;
+    try {
+        const service = await query(`
+            SELECT s.id, s.name, s.master_id 
+            FROM Services s
+            WHERE s.id = ?
+        `, [id]);
+        if (!service.length) {
+            return res.status(404).json({ error: 'Услуга не найдена' });
+        }
+        res.json(service[0]);
+    } catch (error) {
+        console.error('Ошибка при получении услуги:', error);
+        res.status(500).json({ error: 'Ошибка сервера' });
+    }
+});
+
+// Обновление услуги
 router.put('/services/:id', async (req, res) => {
     const { id } = req.params;
-    const { name } = req.body;
-
-    if (!name) {
-        return res.status(400).json({ error: 'Необходимо указать название услуги' });
+    const { name, master_id } = req.body;
+    if (!name || !master_id) {
+        return res.status(400).json({ error: 'Все поля обязательны для заполнения' });
     }
 
     try {
-        const sql = 'UPDATE Services SET name = ? WHERE id = ?';
-        await query(sql, [name, id]);
-        res.json({ message: 'Услуга успешно обновлена' });
+        await query('UPDATE Services SET name = ?, master_id = ? WHERE id = ?', [name, master_id, id]);
+        res.json({ message: 'Услуга обновлена' });
     } catch (error) {
         console.error('Ошибка при обновлении услуги:', error);
         res.status(500).json({ error: 'Ошибка сервера' });
     }
 });
 
-// DELETE /admin/services/:id: Удаление услуги
+// Удаление услуги
 router.delete('/services/:id', async (req, res) => {
     const { id } = req.params;
-
     try {
         await query('DELETE FROM Services WHERE id = ?', [id]);
-        res.json({ message: 'Услуга успешно удалена' });
+        res.json({ message: 'Услуга удалена' });
     } catch (error) {
         console.error('Ошибка при удалении услуги:', error);
         res.status(500).json({ error: 'Ошибка сервера' });
