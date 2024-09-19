@@ -9,7 +9,7 @@ var bodyParser = require("body-parser");
 var app = express();
 var PORT = process.env.PORT || 3000; // Импортируем наш роутер
 
-var apiRouter = require("./apiRouter"); // Подключаем роутер для админки
+var apiRouter = require("./routes/apiRouter"); // Подключаем роутер для админки
 
 
 var adminRouter = require("./routes/adminRouter");

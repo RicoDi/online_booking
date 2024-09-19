@@ -5,7 +5,7 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Импортируем наш роутер
-const apiRouter = require("./apiRouter");
+const apiRouter = require("./routes/apiRouter");
 
 // Подключаем роутер для админки
 const adminRouter = require("./routes/adminRouter");
