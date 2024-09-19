@@ -2,10 +2,10 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const app = express();
-const PORT = process.env.PORT || 3000;
+
 
 // Импортируем наш роутер
-const apiRouter = require("./routes/apiRouter");
+const apiRouter = require("./apiRouter");
 
 // Подключаем роутер для админки
 const adminRouter = require("./routes/adminRouter");
@@ -37,6 +37,8 @@ app.get("/admin/masters", (req, res) => {
     res.sendFile(path.join(__dirname, "public", "admin", "masters.html"));
 });
 
+
+const PORT = process.env.PORT || 3000;
 // Запуск сервера
 app.listen(PORT, () => {
     console.log(`Сервер запущен на http://localhost:${PORT}`);
