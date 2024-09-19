@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', function () {
             masterSelect.innerHTML = '<option value="">Выберите мастера</option>'; // Добавление новых опций
 
             data.masters.forEach(function (master) {
-              if (!master.idMasters || !master.Name || !master.Surname) {
+              if (!master.Id || !master.Name || !master.Surname) {
                 throw new Error("\u041D\u0435\u043A\u043E\u0440\u0440\u0435\u043A\u0442\u043D\u044B\u0435 \u0434\u0430\u043D\u043D\u044B\u0435 \u043C\u0430\u0441\u0442\u0435\u0440\u0430: ".concat(JSON.stringify(master)));
               }
 
               var option = document.createElement('option');
-              option.value = master.idMasters;
+              option.value = master.Id;
               option.textContent = "".concat(master.Name, " ").concat(master.Surname);
               masterSelect.appendChild(option);
             });
@@ -74,6 +74,84 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   loadMasters();
+}); // Получение select элемента с услугами
+
+var serviceSelect = document.getElementById('Services'); // Функция для загрузки услуг в зависимости от выбранного мастера
+
+function loadServicesForMaster(masterId) {
+  var response, data;
+  return regeneratorRuntime.async(function loadServicesForMaster$(_context2) {
+    while (1) {
+      switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+
+          if (masterId) {
+            _context2.next = 4;
+            break;
+          }
+
+          serviceSelect.innerHTML = '<option value="">Выберите мастера для услуг</option>';
+          return _context2.abrupt("return");
+
+        case 4:
+          _context2.next = 6;
+          return regeneratorRuntime.awrap(fetch("/api/services?master_id=".concat(masterId)));
+
+        case 6:
+          response = _context2.sent;
+
+          if (response.ok) {
+            _context2.next = 9;
+            break;
+          }
+
+          throw new Error("\u041E\u0448\u0438\u0431\u043A\u0430 \u0441\u0435\u0442\u0438: ".concat(response.status));
+
+        case 9:
+          _context2.next = 11;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 11:
+          data = _context2.sent;
+
+          if (Array.isArray(data.services)) {
+            _context2.next = 14;
+            break;
+          }
+
+          throw new Error('Неверный формат данных: ожидается массив услуг');
+
+        case 14:
+          // Очистка текущих опций
+          serviceSelect.innerHTML = '<option value="">Выберите услугу</option>'; // Добавление опций для полученных услуг
+
+          data.services.forEach(function (service) {
+            var option = document.createElement('option');
+            option.value = service.id;
+            option.textContent = service.name;
+            serviceSelect.appendChild(option);
+          });
+          _context2.next = 21;
+          break;
+
+        case 18:
+          _context2.prev = 18;
+          _context2.t0 = _context2["catch"](0);
+          console.error('Ошибка при загрузке услуг:', _context2.t0);
+
+        case 21:
+        case "end":
+          return _context2.stop();
+      }
+    }
+  }, null, null, [[0, 18]]);
+} // Событие при изменении мастера
+
+
+document.getElementById('Masters').addEventListener('change', function () {
+  var selectedMasterId = this.value;
+  loadServicesForMaster(selectedMasterId); // Загрузка услуг для выбранного мастера
 }); // Функция для обработки отправки формы
 
 function handleFormSubmit(event) {
@@ -98,8 +176,68 @@ function handleFormSubmit(event) {
     time: time
   };
   console.log(booking);
-} // Настройка событий для страницы 4
+}
 
+; //инициация отправки формы
+
+document.getElementById('user_data').addEventListener('submit', function _callee(event) {
+  var formData, response, result;
+  return regeneratorRuntime.async(function _callee$(_context3) {
+    while (1) {
+      switch (_context3.prev = _context3.next) {
+        case 0:
+          event.preventDefault(); // Отключаем стандартное поведение формы
+
+          formData = {
+            name: document.getElementById('name').value,
+            surname: document.getElementById('surname').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            master: document.getElementById('master').value,
+            service: document.getElementById('service').value,
+            date: document.getElementById('date').value,
+            time: document.getElementById('time').value
+          };
+          _context3.prev = 2;
+          _context3.next = 5;
+          return regeneratorRuntime.awrap(fetch('/api/confirm', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+          }));
+
+        case 5:
+          response = _context3.sent;
+          _context3.next = 8;
+          return regeneratorRuntime.awrap(response.json());
+
+        case 8:
+          result = _context3.sent;
+
+          if (result.success) {
+            alert('Бронирование успешно создано!');
+          } else {
+            alert("\u041E\u0448\u0438\u0431\u043A\u0430: ".concat(result.error));
+          }
+
+          _context3.next = 16;
+          break;
+
+        case 12:
+          _context3.prev = 12;
+          _context3.t0 = _context3["catch"](2);
+          console.error('Ошибка отправки данных:', _context3.t0);
+          alert('Произошла ошибка при отправке бронирования.');
+
+        case 16:
+        case "end":
+          return _context3.stop();
+      }
+    }
+  }, null, null, [[2, 12]]);
+}); // Настройка событий для страницы 4
 
 function setupPage4Events() {
   console.log("Setting up events for page 4"); // Обновление деталей бронирования
@@ -205,8 +343,60 @@ function updateButtons() {
 
     nextBtn.setAttribute("type", "button"); // Меняем тип кнопки на "button"
   }
-} // Механизм переключения страниц
+}
 
+;
+document.addEventListener('DOMContentLoaded', function () {
+  var nextBtn = document.getElementById("nextBtn"); // Функция для отправки данных бронирования
+
+  function submitBookingForm(event) {
+    event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+    // Собираем данные в объект booking
+
+    var booking = {
+      name: document.getElementById('name').value,
+      surname: document.getElementById('surname').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      master: document.getElementById('Masters').value,
+      service: document.getElementById('Services').value,
+      date: selectedDate,
+      // предполагается, что переменная selectedDate уже существует
+      time: selectedTime // предполагается, что переменная selectedTime уже существует
+
+    };
+    console.log(booking); // Логирование данных для проверки
+    // Проверка валидности данных
+
+    if (!booking.name || !booking.surname || !booking.phone || !booking.email || !booking.master || !booking.service || !booking.date || !booking.time) {
+      alert("Пожалуйста, заполните все поля.");
+      return;
+    } // Отправка данных через fetch
+
+
+    fetch('/api/confirm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(booking)
+    }).then(function (response) {
+      return response.json();
+    }).then(function (result) {
+      if (result.success) {
+        alert('Бронирование успешно создано!');
+      } else {
+        alert("\u041E\u0448\u0438\u0431\u043A\u0430: ".concat(result.error));
+      }
+    })["catch"](function (error) {
+      console.error('Ошибка отправки данных:', error);
+      alert('Произошла ошибка при отправке бронирования.');
+    });
+  } // Обработчик клика по кнопке вне формы
+
+
+  nextBtn.addEventListener('click', submitBookingForm);
+}); // Механизм переключения страниц
 
 function showPage(page) {
   console.log("showPage" + page);

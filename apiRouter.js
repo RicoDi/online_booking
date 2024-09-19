@@ -63,19 +63,20 @@ router.get('/services', async (req, res) => {
 });
 
 // Эндпоинт для сохранения данных бронирования
-router.post('/confirm', async (req, res) => {
-    const { name, surname, phone, email, master, service, date } = req.body;
+router.post('/confirm', async(req, res) => {
+    const { name, surname, phone, email, master, service, date, time } = req.body;
 
-    if (!name || !surname || !phone || !email || !master || !service || !date) {
+
+    if (!name || !surname || !phone || !email || !master || !service || !date || !time) {
         return res.status(400).json({ error: 'Заполните все поля' });
     }
 
     try {
         const sql = `
-            INSERT INTO bookings (name, surname, phone, email, master_id, service_id, date)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO bookings (name, surname, phone, email, master_id, service_id, booking_date, booking_time)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
-        await query(sql, [name, surname, phone, email, master, service, date]);
+        await query(sql, [name, surname, phone, email, master, service, date, time]);
         res.json({ success: true, message: 'Данные успешно сохранены' });
     } catch (error) {
         console.error('Ошибка при сохранении данных:', error);

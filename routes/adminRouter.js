@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { query } = require('../db'); // Ваша функция для выполнения запросов к базе данных
+// const { query } = require('../db'); // Ваша функция для выполнения запросов к базе данных
 
 // ========== Управление мастерами ==========
 

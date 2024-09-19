@@ -113,7 +113,43 @@ function handleFormSubmit(event) {
   };
 
   console.log(booking);
-}
+};
+//инициация отправки формы
+document.getElementById('user_data').addEventListener('submit', async function(event) {
+    event.preventDefault(); // Отключаем стандартное поведение формы
+
+    const formData = {
+      name: document.getElementById('name').value,
+      surname: document.getElementById('surname').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      master: document.getElementById('master').value,
+      service: document.getElementById('service').value,
+      date: document.getElementById('date').value,
+      time: document.getElementById('time').value
+    };
+
+    try {
+      const response = await fetch('/api/confirm', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        alert('Бронирование успешно создано!');
+      } else {
+        alert(`Ошибка: ${result.error}`);
+      }
+    } catch (error) {
+      console.error('Ошибка отправки данных:', error);
+      alert('Произошла ошибка при отправке бронирования.');
+    }
+  });
 
 // Настройка событий для страницы 4
 function setupPage4Events() {
@@ -198,6 +234,7 @@ function updateBookingObject() {
     console.log(booking);
 }
 
+
 // Обновление кнопок прогресса в зависимости от текущей страницы
 function updateProgress() {
     for (let i = 1; i <= totalPages; i++) {
@@ -220,7 +257,61 @@ function updateButtons() {
         nextBtn.textContent = "Далі";  // Меняем текст кнопки на "Next"
         nextBtn.setAttribute("type", "button");  // Меняем тип кнопки на "button"
     }
-}
+};
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const nextBtn = document.getElementById("nextBtn");
+
+    // Функция для отправки данных бронирования
+    function submitBookingForm(event) {
+        event.preventDefault(); // Предотвращаем стандартное поведение кнопки
+
+        // Собираем данные в объект booking
+        const booking = {
+            name: document.getElementById('name').value,
+            surname: document.getElementById('surname').value,
+            phone: document.getElementById('phone').value,
+            email: document.getElementById('email').value,
+            master: document.getElementById('Masters').value,
+            service: document.getElementById('Services').value,
+            date: selectedDate, // предполагается, что переменная selectedDate уже существует
+            time: selectedTime  // предполагается, что переменная selectedTime уже существует
+        };
+
+        console.log(booking);  // Логирование данных для проверки
+
+        // Проверка валидности данных
+        if (!booking.name || !booking.surname || !booking.phone || !booking.email || !booking.master || !booking.service || !booking.date || !booking.time) {
+            alert("Пожалуйста, заполните все поля.");
+            return;
+        }
+
+        // Отправка данных через fetch
+        fetch('/api/confirm', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(booking)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                alert('Бронирование успешно создано!');
+            } else {
+                alert(`Ошибка: ${result.error}`);
+            }
+        })
+        .catch(error => {
+            console.error('Ошибка отправки данных:', error);
+            alert('Произошла ошибка при отправке бронирования.');
+        });
+    }
+
+    // Обработчик клика по кнопке вне формы
+    nextBtn.addEventListener('click', submitBookingForm);
+});
 
 // Механизм переключения страниц
 function showPage(page) {
